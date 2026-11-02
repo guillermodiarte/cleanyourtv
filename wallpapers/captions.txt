@@ -1,10 +1,8 @@
-GoogleTV-Wallpaper.png	Google TV
-Combate_contra_Apple.png	Combate contra Apple
-Combate_contra_Apple_2.png	Combate contra Apple 2
-Noche_de_Peliculas_con_Google_TV.png	Noche de Películas con Google TV
-Noche_de_streaming_con_Google_TV.png	Noche de streaming con Google TV
-Ruinas_luminosas_en_el_abismo_oceanico.png	Ruinas luminosas en el abismo oceánico
-Sala_futurista_con_Google_TV_resplandeciente.png	Sala futurista con Google TV resplandeciente
-Sala_moderna_con_logo_de_Google_TV.png	Sala moderna con logo de Google TV
-Sala_zen_con_logo_de_Google_TV.png	Sala zen con logo de Google TV
-
+Combate_contra_Apple.webp	Combate contra Apple
+Combate_contra_Apple_2.webp	Combate contra Apple 2
+Noche_de_Peliculas_con_Google_TV.webp	Noche de Películas con Google TV
+Noche_de_streaming_con_Google_TV.webp	Noche de streaming con Google TV
+Ruinas_luminosas_en_el_abismo_oceanico.webp	Ruinas luminosas en el abismo oceánico
+Sala_futurista_con_Google_TV_resplandeciente.webp	Sala futurista con Google TV resplandeciente
+Sala_moderna_con_logo_de_Google_TV.webp	Sala moderna con logo de Google TV
+Sala_zen_con_logo_de_Google_TV.webp	Sala zen con logo de Google TV

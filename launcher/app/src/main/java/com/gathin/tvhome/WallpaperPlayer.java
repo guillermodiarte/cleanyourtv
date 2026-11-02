@@ -107,7 +107,7 @@ final class WallpaperPlayer {
         String previous = preferences.getString("image", "");
         List<File> playable = playable();
         File first = WallpaperRotation.find(playable, previous);
-        if (first == null) first = WallpaperRotation.find(playable, "GoogleTV-Wallpaper.png");
+        if (first == null) first = WallpaperRotation.find(playable, "wallpaper.jpg");
         if (first == null) first = WallpaperRotation.pick(playable, previous, order, random);
         while (first != null) {
             Bitmap bitmap = decode(first);

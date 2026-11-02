@@ -111,6 +111,9 @@ Cada vez que se inicie la configuración de un nuevo televisor, se deben definir
 
 ### Visualización
 
+#### Control de rotación de fondos desde la tele (Ajustes del Launcher)
+![Menú de rotación de fondos](switches/wallpaper_rotation_menu.jpg)
+
 #### Rotación de paisajes y fondos ilustrados
 ![Wallpapers](../themes/scenes/screenshot.jpg)
 

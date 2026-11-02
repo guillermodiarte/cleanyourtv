@@ -40,7 +40,7 @@ Cada vez que se inicie la configuración de un nuevo televisor, se deben definir
 ### Visualización
 
 #### Barra superior limpia sin botón de reorganizar (`reorder_button: false`)
-![Barra limpia sin reorder](../shots/beyondtv/09-no-reorder.png)
+![Barra limpia sin reorder](switches/reorder_button.jpg)
 
 #### Accesos directos a apps en la barra superior (`top_bar_apps: ["com.google.android.youtube.tv"]`)
 ![Atajos en barra superior](switches/top_bar_apps.jpg)

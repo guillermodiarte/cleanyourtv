@@ -1,0 +1,19 @@
+{
+  "wallpaper": true,
+  "wallpaper_rotation_minutes": 60,
+  "wallpaper_dim": 20,
+  "dock_glass": true,
+  "rows_below_dock": 0,
+  "dock_apps": [
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.cbs.ca",
+    "com.google.android.youtube.tv",
+    "com.netflix.ninja",
+    "ar.com.flow.androidtv"
+  ],
+  "hidden_apps": [
+    "com.android.tv.settings",
+    "com.siliconworks.firmware"
+  ]
+}

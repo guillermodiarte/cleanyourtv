@@ -86,10 +86,27 @@ if ($themeJson -isnot [System.Management.Automation.PSCustomObject]) {
 }
 # Every collection name is checked before anything changes on the TV, as in theme.sh: a name refused halfway
 # through the push left the new config.json and part of the collection behind. b64push.py refuses '..' in a path.
-$wallpapers = Join-Path $Theme 'wallpapers'
+# Images can live in $Theme\wallpapers\ (classic layout) or directly in $Theme\ (flat layout, skipping
+# config.json, screenshot.jpg and wallpaper.jpg which are not wallpaper pictures).
+$wallpapersDir = Join-Path $Theme 'wallpapers'
 $images = @()
-if (Test-Path $wallpapers -PathType Container) {
-    $images = @(Get-ChildItem $wallpapers -File | Where-Object { $_.Extension -match '^\.(jpg|jpeg|png|webp)$' })
+$wpSrc = $null
+$captionsSrc = $null
+if (Test-Path $wallpapersDir -PathType Container) {
+    $wpSrc = $wallpapersDir
+    $captionsSrc = Join-Path $wallpapersDir 'captions.txt'
+    $images = @(Get-ChildItem $wallpapersDir -File | Where-Object { $_.Extension -match '^\.(jpg|jpeg|png|webp)$' })
+    foreach ($image in $images) {
+        if ($image.Name -notmatch '^[A-Za-z0-9_.-]+$' -or $image.Name.Contains('..')) { throw "unsupported wallpaper filename: $($image.Name)" }
+    }
+} else {
+    # Flat layout: images are directly in $Theme, alongside config.json.
+    $wpSrc = $Theme
+    $captionsSrc = Join-Path $Theme 'captions.txt'
+    $skipNames = @('screenshot.jpg', 'wallpaper.jpg')
+    $images = @(Get-ChildItem $Theme -File | Where-Object {
+        $_.Extension -match '^\.(jpg|jpeg|png|webp)$' -and $skipNames -notcontains $_.Name
+    })
     foreach ($image in $images) {
         if ($image.Name -notmatch '^[A-Za-z0-9_.-]+$' -or $image.Name.Contains('..')) { throw "unsupported wallpaper filename: $($image.Name)" }
     }
@@ -107,9 +124,8 @@ foreach ($image in $images) {
     Invoke-Tv tv.py (Put "wallpapers/$($image.Name)") | Out-Null
 }
 # The collection's names (wallpaper_captions); a theme without them leaves no stale names behind.
-$captions = Join-Path $Theme 'wallpapers\captions.txt'
-if (Test-Path $captions -PathType Leaf) {
-    Invoke-Tv b64push.py $captions (Stage 'wallpapers/captions.txt')
+if (Test-Path $captionsSrc -PathType Leaf) {
+    Invoke-Tv b64push.py $captionsSrc (Stage 'wallpapers/captions.txt')
     Invoke-Tv tv.py (Put 'wallpapers/captions.txt') | Out-Null
 } else {
     Invoke-Tv tv.py (Drop 'wallpapers/captions.txt') | Out-Null

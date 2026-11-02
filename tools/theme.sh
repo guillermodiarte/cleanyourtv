@@ -115,13 +115,33 @@ esac
 # Every collection name is checked before anything changes on the TV: a name refused halfway through the push
 # left the new config.json and part of the collection behind. b64push.py refuses a path with '..' in it, so
 # such a name (sunset..jpg) is refused here too. The names that pass have no spaces, so NAMES splits on them.
+# Images can live in $THEME/wallpapers/ (classic layout) or directly in $THEME/ (flat layout, skipping
+# config.json, screenshot.jpg and wallpaper.jpg which are not wallpaper pictures).
 NAMES=""
+WP_SRC=""
 if [ -d "$THEME/wallpapers" ]; then
+  WP_SRC="$THEME/wallpapers"
+  CAPTIONS_SRC="$THEME/wallpapers/captions.txt"
   for IMAGE in "$THEME"/wallpapers/*; do
     [ -f "$IMAGE" ] || continue
     case "$IMAGE" in
       *.[jJ][pP][gG]|*.[jJ][pP][eE][gG]|*.[pP][nN][gG]|*.[wW][eE][bB][pP])
         NAME=$(basename "$IMAGE")
+        [[ "$NAME" =~ ^[A-Za-z0-9_.-]+$ && "$NAME" != *..* ]] || { echo "unsupported wallpaper filename: $NAME" >&2; exit 1; }
+        NAMES="$NAMES $NAME" ;;
+    esac
+  done
+else
+  # Flat layout: images are directly in $THEME, alongside config.json.
+  WP_SRC="$THEME"
+  CAPTIONS_SRC="$THEME/captions.txt"
+  for IMAGE in "$THEME"/*; do
+    [ -f "$IMAGE" ] || continue
+    case "$IMAGE" in
+      *.[jJ][pP][gG]|*.[jJ][pP][eE][gG]|*.[pP][nN][gG]|*.[wW][eE][bB][pP])
+        NAME=$(basename "$IMAGE")
+        # Skip meta-files that are not wallpaper pictures.
+        case "$NAME" in screenshot.jpg|wallpaper.jpg) continue ;; esac
         [[ "$NAME" =~ ^[A-Za-z0-9_.-]+$ && "$NAME" != *..* ]] || { echo "unsupported wallpaper filename: $NAME" >&2; exit 1; }
         NAMES="$NAMES $NAME" ;;
     esac
@@ -139,12 +159,12 @@ else
 fi
 tv "$CLEAR_WALLPAPERS" >/dev/null
 for NAME in $NAMES; do
-  "$PY" -I b64push.py "$THEME/wallpapers/$NAME" "$(stage "wallpapers/$NAME")"
+  "$PY" -I b64push.py "$WP_SRC/$NAME" "$(stage "wallpapers/$NAME")"
   tv "$(put "wallpapers/$NAME")" >/dev/null
 done
 # The collection's names (wallpaper_captions); a theme without them leaves no stale names behind.
-if [ -f "$THEME/wallpapers/captions.txt" ]; then
-  "$PY" -I b64push.py "$THEME/wallpapers/captions.txt" "$(stage wallpapers/captions.txt)"
+if [ -f "$CAPTIONS_SRC" ]; then
+  "$PY" -I b64push.py "$CAPTIONS_SRC" "$(stage wallpapers/captions.txt)"
   tv "$(put wallpapers/captions.txt)" >/dev/null
 else
   tv "$(del wallpapers/captions.txt)" >/dev/null

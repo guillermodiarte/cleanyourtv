@@ -163,4 +163,8 @@ if ($HomeKeyService) { Enable-Service 'HomeKeyService' }
 if ($RestoreKeyServices) {
     'pm grant com.gathin.tvhome android.permission.WRITE_SECURE_SETTINGS && echo restore-granted' | & $py -I ..\tools\tv.py --batch
 }
+if (Test-Path '..\wallpapers' -PathType Container) {
+    Write-Host 'Applying wallpapers...'
+    try { & ..\tools\theme.ps1 -TvHost $TvHost ..\wallpapers } catch { Write-Warning "Could not apply wallpapers: $_" }
+}
 Write-Host 'Installed. Press Home on the remote to see it.'

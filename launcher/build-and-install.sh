@@ -235,4 +235,8 @@ if [ "${HOME_KEY_SERVICE:-0}" = 1 ]; then enable_service HomeKeyService; fi
 if [ "${RESTORE_KEY_SERVICES:-0}" = 1 ]; then
   "$PY" -I ../tools/tv.py "pm grant com.gathin.tvhome android.permission.WRITE_SECURE_SETTINGS && echo restore-granted"
 fi
+if [ -d "../wallpapers" ]; then
+  echo "Applying wallpapers..."
+  TV_HOST="${TV_HOST:-}" bash ../tools/theme.sh ../wallpapers || true
+fi
 echo "Installed. Press Home on the remote to see it."

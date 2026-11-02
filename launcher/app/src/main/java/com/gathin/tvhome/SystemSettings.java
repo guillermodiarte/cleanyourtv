@@ -18,6 +18,8 @@ final class SystemSettings {
         PackageManager pm = context.getPackageManager();
         Intent standard = new Intent(action);
         ResolveInfo resolved = pm.resolveActivity(standard, PackageManager.MATCH_DEFAULT_ONLY);
+        // Zeasn/ZVT (HiSilicon) intercepts ACTION_SETTINGS with a 4-icon dialog instead of TV settings.
+        if (resolved != null && resolved.activityInfo.name.contains("zvt.MainActivity")) resolved = null;
         // Fire OS resolves the standard actions to a CTS compliance stub that opens nothing;
         // treat it as missing so the vendor fallback runs.
         if (resolved != null && !resolved.activityInfo.name.contains("CTSDummy")) return standard;

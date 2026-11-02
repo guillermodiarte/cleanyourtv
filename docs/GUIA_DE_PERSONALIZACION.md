@@ -18,6 +18,8 @@ Cada vez que se inicie la configuración de un nuevo televisor, se deben definir
      * `false` (o `reduced_motion: true`): Respuesta instantánea sin demoras ni transiciones, ideal para televisores con chipsets básicos o usuarios que prefieren máxima inmediatez.
 3. **Protector de pantalla (Screensaver de Paisajes)**:
    * **Mantener siempre habilitado el protector de paisajes** (`com.google.android.backdrop`): No debe deshabilitarse nunca durante el debloat. Protege la pantalla mostrando paisajes rotativos de Google tras 5 minutos de inactividad, liberando la memoria en cuanto se pulsa una tecla.
+4. **Depuración USB (ADB) permanentemente activa**:
+   * **No desactivar nunca**: Al terminar cualquier instalación, cambio de tema, debloat o ejecución de comandos, el código y los scripts ejecutan `settings put global adb_enabled 1` para asegurar que el acceso ADB siga siempre disponible sin interrupciones.
 
 ---
 

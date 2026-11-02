@@ -133,5 +133,6 @@ if (Test-Path $captionsSrc -PathType Leaf) {
 Invoke-Tv tv.py "printf '%s' '$revision' > $tmp-theme_revision; $(Put 'theme_revision')" | Out-Null
 & $py -I theme_restart.py
 if ($LASTEXITCODE) { throw 'Home restart recovery failed' }
+try { Invoke-Tv tv.py 'settings put global adb_enabled 1' | Out-Null } catch {}
 Write-Host 'applied'
 Write-Host "Theme $(Split-Path $Theme -Leaf) is on the TV. Undo with: tools\theme.ps1 -TvHost $TvHost -Reset"

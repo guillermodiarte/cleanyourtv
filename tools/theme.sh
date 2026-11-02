@@ -171,5 +171,6 @@ else
 fi
 tv "printf '%s' '$REVISION' > $TMP-theme_revision; $(put theme_revision)" >/dev/null
 "$PY" -I theme_restart.py
+tv 'settings put global adb_enabled 1' >/dev/null 2>&1 || true
 echo applied
 echo "Theme $(basename "$THEME") is on the TV. Undo with: tools/theme.sh --reset"

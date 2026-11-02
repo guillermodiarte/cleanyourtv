@@ -16,6 +16,8 @@ Cada vez que se inicie la configuración de un nuevo televisor, se deben definir
    * **¿Activar animaciones?**
      * `true`: Transiciones elásticas suaves, desplazamientos fluidos y efectos visuales al navegar.
      * `false` (o `reduced_motion: true`): Respuesta instantánea sin demoras ni transiciones, ideal para televisores con chipsets básicos o usuarios que prefieren máxima inmediatez.
+3. **Protector de pantalla (Screensaver de Paisajes)**:
+   * **Mantener siempre habilitado el protector de paisajes** (`com.google.android.backdrop`): No debe deshabilitarse nunca durante el debloat. Protege la pantalla mostrando paisajes rotativos de Google tras 5 minutos de inactividad, liberando la memoria en cuanto se pulsa una tecla.
 
 ---
 
@@ -152,6 +154,9 @@ Cada vez que se inicie la configuración de un nuevo televisor, se deben definir
 | `"app_keys"` | `list` | Reasigna botones del control remoto para abrir apps o funciones específicas. |
 
 ### Visualización
+
+#### Protector de pantalla con paisajes rotativos en alta definición (Google Backdrop)
+![Protector de pantalla paisajes](switches/screensaver_backdrop.jpg)
 
 #### Salvapantallas de reloj flotante minimalista
 ![Reloj salvapantallas](clock-screensaver.png)

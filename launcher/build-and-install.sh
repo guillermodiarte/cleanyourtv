@@ -239,4 +239,6 @@ if [ -d "../wallpapers" ]; then
   echo "Applying wallpapers..."
   TV_HOST="${TV_HOST:-}" bash ../tools/theme.sh ../wallpapers || true
 fi
+echo "Configuring screensaver..."
+"$PY" -I ../tools/tv.py 'if pm list packages -u com.google.android.backdrop 2>/dev/null | grep -q com.google.android.backdrop; then pm enable com.google.android.backdrop 2>/dev/null || true; settings put secure screensaver_components com.google.android.backdrop/.Backdrop; else settings put secure screensaver_components com.gathin.tvhome/.ClockDream; fi; settings put secure screensaver_enabled 1; settings put secure screensaver_activate_on_sleep 1; settings put secure screensaver_activate_on_dock 1; settings put system screen_off_timeout 300000; echo screensaver-configured' 2>/dev/null || true
 echo "Installed. Press Home on the remote to see it."

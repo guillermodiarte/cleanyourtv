@@ -167,4 +167,8 @@ if (Test-Path '..\wallpapers' -PathType Container) {
     Write-Host 'Applying wallpapers...'
     try { & ..\tools\theme.ps1 -TvHost $TvHost ..\wallpapers } catch { Write-Warning "Could not apply wallpapers: $_" }
 }
+Write-Host 'Configuring screensaver...'
+try {
+    'if pm list packages -u com.google.android.backdrop 2>/dev/null | grep -q com.google.android.backdrop; then pm enable com.google.android.backdrop 2>/dev/null || true; settings put secure screensaver_components com.google.android.backdrop/.Backdrop; else settings put secure screensaver_components com.gathin.tvhome/.ClockDream; fi; settings put secure screensaver_enabled 1; settings put secure screensaver_activate_on_sleep 1; settings put secure screensaver_activate_on_dock 1; settings put system screen_off_timeout 300000; echo screensaver-configured' | & $py -I ..\tools\tv.py --batch
+} catch { Write-Warning "Could not configure screensaver: $_" }
 Write-Host 'Installed. Press Home on the remote to see it.'

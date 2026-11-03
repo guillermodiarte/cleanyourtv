@@ -20,6 +20,9 @@ Cada vez que se inicie la configuración de un nuevo televisor, se deben definir
    * **Mantener siempre habilitado el protector de paisajes** (`com.google.android.backdrop`): No debe deshabilitarse nunca durante el debloat. Protege la pantalla mostrando paisajes rotativos de Google tras 5 minutos de inactividad, liberando la memoria en cuanto se pulsa una tecla.
 4. **Depuración USB (ADB) permanentemente activa**:
    * **No desactivar nunca**: Al terminar cualquier instalación, cambio de tema, debloat o ejecución de comandos, el código y los scripts ejecutan `settings put global adb_enabled 1` para asegurar que el acceso ADB siga siempre disponible sin interrupciones.
+5. **Nitidez de Fondos y Controles en Pantalla**:
+   * **Fondo nítido por defecto**: Se aplican `"wallpaper_true_color": true` (color de 32 bits), `"sky_intensity": 0` (sin velo difuminado) y `"wallpaper_dim": 0` (100% de brillo/nitidez original).
+   * **Controles en Ajustes del Lanzador**: Desde el propio menú del televisor se pueden personalizar tanto la **"Atenuación del fondo"** (0%, 15%, 30%, 50%) como el **"Efecto de cielo"** (No, 30%, 60%, 90%), además de la rotación y el fondo activo.
 
 ---
 

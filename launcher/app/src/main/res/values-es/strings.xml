@@ -98,10 +98,11 @@
     <string name="wallpaper_rotation_label">Rotación de fondos</string>
     <string name="wallpaper_rotation_state">Rotación de fondos: %1$s</string>
     <string name="wallpaper_rotation_off">Desactivada</string>
-    <string name="wallpaper_rotation_5min">Cada 5 minutos</string>
-    <string name="wallpaper_rotation_15min">Cada 15 minutos</string>
-    <string name="wallpaper_rotation_30min">Cada 30 minutos</string>
     <string name="wallpaper_rotation_60min">Cada 1 hora</string>
+    <string name="wallpaper_dim_label">Atenuación del fondo</string>
+    <string name="wallpaper_dim_state">Atenuación del fondo: %1$s</string>
+    <string name="sky_intensity_label">Efecto de cielo</string>
+    <string name="sky_intensity_state">Efecto de cielo: %1$s</string>
     <string name="quick_picture">Imagen</string>
     <string name="quick_network">Red</string>
     <string name="quick_apps">Aplicaciones</string>

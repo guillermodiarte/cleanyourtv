@@ -34,9 +34,13 @@ public final class LauncherSettingsActivity extends Activity {
     private final TextView[] dockChoices = new TextView[DOCK_OPACITIES.length];
     private static final String[] CLOCK_FORMATS = {"system", "12", "24"};
     private final TextView[] clockChoices = new TextView[CLOCK_FORMATS.length];
-    private static final int[] ROTATION_INTERVALS = {0, 5, 15, 30, 60};
+    private static final int[] ROTATION_INTERVALS = {0, 1, 2, 3, 5, 15, 30, 60};
+    private static final int[] DIM_PERCENTAGES = {0, 15, 30, 50};
+    private static final int[] SKY_PERCENTAGES = {0, 30, 60, 90};
     private TextView wallpaperChoice;
     private TextView wallpaperRotationChoice;
+    private TextView wallpaperDimChoice;
+    private TextView skyIntensityChoice;
     private TextView animationsChoice;
     private TextView advancedChoice;
     private TextView followThemeChoice;
@@ -129,6 +133,10 @@ public final class LauncherSettingsActivity extends Activity {
         wallpaperChoice.setOnClickListener(v -> showWallpaperPicker());
         wallpaperRotationChoice = findViewById(R.id.wallpaperRotationChoice);
         wallpaperRotationChoice.setOnClickListener(v -> showRotationPicker());
+        wallpaperDimChoice = findViewById(R.id.wallpaperDimChoice);
+        wallpaperDimChoice.setOnClickListener(v -> showPercentPicker(R.string.wallpaper_dim_label, Config.WALLPAPER_DIM_KEY, DIM_PERCENTAGES));
+        skyIntensityChoice = findViewById(R.id.skyIntensityChoice);
+        skyIntensityChoice.setOnClickListener(v -> showPercentPicker(R.string.sky_intensity_label, Config.SKY_INTENSITY_KEY, SKY_PERCENTAGES));
         animationsChoice = findViewById(R.id.animationsChoice);
         animationsChoice.setOnClickListener(v -> {
             animations = !animations;
@@ -161,7 +169,7 @@ public final class LauncherSettingsActivity extends Activity {
             if (!hasOnTvChoices()) return;
             choices.edit().remove("columns").remove(Config.ROWS_BELOW_DOCK_KEY).remove("animations")
                     .remove("advanced_effects").remove(Config.WALLPAPER_CHOICE_KEY)
-                    .remove(Config.WALLPAPER_ROTATION_KEY)
+                    .remove(Config.WALLPAPER_ROTATION_KEY).remove(Config.WALLPAPER_DIM_KEY).remove(Config.SKY_INTENSITY_KEY)
                     .remove(Config.DOCK_OPACITY_KEY).remove(Config.CLOCK_FORMAT_KEY).remove(OpenOnStart.KEY).commit();
             Config current = Config.load(this);
             columns = current.columns;
@@ -227,13 +235,10 @@ public final class LauncherSettingsActivity extends Activity {
     }
 
     private void showRotationPicker() {
-        String[] labels = new String[] {
-            getString(R.string.wallpaper_rotation_off),
-            getString(R.string.wallpaper_rotation_5min),
-            getString(R.string.wallpaper_rotation_15min),
-            getString(R.string.wallpaper_rotation_30min),
-            getString(R.string.wallpaper_rotation_60min)
-        };
+        String[] labels = new String[ROTATION_INTERVALS.length];
+        for (int i = 0; i < ROTATION_INTERVALS.length; i++) {
+            labels[i] = ROTATION_INTERVALS[i] == 0 ? getString(R.string.wallpaper_rotation_off) : rotationLabel(ROTATION_INTERVALS[i]);
+        }
         int current = choices.getInt(Config.WALLPAPER_ROTATION_KEY, -1);
         int checked = -1;
         for (int i = 0; i < ROTATION_INTERVALS.length; i++) {
@@ -264,11 +269,42 @@ public final class LauncherSettingsActivity extends Activity {
     }
 
     private String rotationLabel(int minutes) {
-        if (minutes == 5) return getString(R.string.wallpaper_rotation_5min);
-        if (minutes == 15) return getString(R.string.wallpaper_rotation_15min);
-        if (minutes == 30) return getString(R.string.wallpaper_rotation_30min);
         if (minutes == 60) return getString(R.string.wallpaper_rotation_60min);
         return minutes + " min";
+    }
+
+    private void showPercentPicker(int titleRes, String prefKey, int[] percentages) {
+        String[] labels = new String[percentages.length];
+        for (int i = 0; i < percentages.length; i++) {
+            labels[i] = percentLabel(percentages[i]);
+        }
+        int current = choices.getInt(prefKey, -1);
+        int checked = -1;
+        for (int i = 0; i < percentages.length; i++) {
+            if (percentages[i] == current) {
+                checked = i;
+                break;
+            }
+        }
+        new AlertDialog.Builder(this)
+                .setTitle(titleRes)
+                .setSingleChoiceItems(labels, checked, (dialog, which) -> {
+                    dialog.dismiss();
+                    choices.edit().putInt(prefKey, percentages[which]).apply();
+                    changed();
+                    refresh();
+                })
+                .setNeutralButton(R.string.wallpaper_theme_default, (dialog, which) -> {
+                    choices.edit().remove(prefKey).apply();
+                    changed();
+                    refresh();
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
+
+    private String percentLabel(int percent) {
+        return percent == 0 ? getString(R.string.off) : percent + "%";
     }
 
     /** Off, then every app with a TV entry point by name. Saved at once; it is read on the next boot. */
@@ -373,6 +409,12 @@ public final class LauncherSettingsActivity extends Activity {
                 : rotationCurrent == 0 ? getString(R.string.wallpaper_rotation_off)
                 : rotationLabel(rotationCurrent);
         wallpaperRotationChoice.setText(getString(R.string.wallpaper_rotation_state, rotationLabel));
+        int dimCurrent = choices.getInt(Config.WALLPAPER_DIM_KEY, -1);
+        String dimLabel = dimCurrent == -1 ? getString(R.string.wallpaper_theme_default) : percentLabel(dimCurrent);
+        wallpaperDimChoice.setText(getString(R.string.wallpaper_dim_state, dimLabel));
+        int skyCurrent = choices.getInt(Config.SKY_INTENSITY_KEY, -1);
+        String skyLabel = skyCurrent == -1 ? getString(R.string.wallpaper_theme_default) : percentLabel(skyCurrent);
+        skyIntensityChoice.setText(getString(R.string.sky_intensity_state, skyLabel));
         openOnStartChoice.setText(getString(R.string.open_on_start_state, openOnStartLabel()));
         followThemeChoice.setSelected(!hasOnTvChoices());
     }
@@ -381,6 +423,7 @@ public final class LauncherSettingsActivity extends Activity {
         return choices.contains("columns") || choices.contains(Config.ROWS_BELOW_DOCK_KEY)
                 || choices.contains("animations") || choices.contains("advanced_effects")
                 || choices.contains(Config.WALLPAPER_CHOICE_KEY) || choices.contains(Config.WALLPAPER_ROTATION_KEY)
+                || choices.contains(Config.WALLPAPER_DIM_KEY) || choices.contains(Config.SKY_INTENSITY_KEY)
                 || choices.contains(Config.DOCK_OPACITY_KEY) || choices.contains(Config.CLOCK_FORMAT_KEY)
                 || choices.contains(OpenOnStart.KEY);
     }

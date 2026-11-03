@@ -61,10 +61,11 @@
     <string name="wallpaper_rotation_label">Wallpaper rotation</string>
     <string name="wallpaper_rotation_state">Wallpaper rotation: %1$s</string>
     <string name="wallpaper_rotation_off">Off</string>
-    <string name="wallpaper_rotation_5min">Every 5 minutes</string>
-    <string name="wallpaper_rotation_15min">Every 15 minutes</string>
-    <string name="wallpaper_rotation_30min">Every 30 minutes</string>
     <string name="wallpaper_rotation_60min">Every 1 hour</string>
+    <string name="wallpaper_dim_label">Wallpaper dimming</string>
+    <string name="wallpaper_dim_state">Wallpaper dimming: %1$s</string>
+    <string name="sky_intensity_label">Sky effect</string>
+    <string name="sky_intensity_state">Sky effect: %1$s</string>
     <string name="animations_state">Animations: %1$s</string>
     <string name="advanced_effects">Advanced effects</string>
     <string name="advanced_effects_state">Advanced effects: %1$s</string>
